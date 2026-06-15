@@ -1,4 +1,5 @@
 import ProductCard from "@/components/ProductCard";
+import { apiUrl } from "@/lib/api";
 
 type Product = {
   id: string;
@@ -13,7 +14,7 @@ type Product = {
 
 async function getProducts(): Promise<Product[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000"}/api/products`, {
+    const res = await fetch(apiUrl("/api/products"), {
       next: { revalidate: 60 },
     });
 

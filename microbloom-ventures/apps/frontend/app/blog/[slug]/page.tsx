@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { apiUrl } from "@/lib/api";
 
 type Blog = {
   id: string;
@@ -17,7 +18,7 @@ type Blog = {
 async function getBlog(slug: string): Promise<Blog | null> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000"}/api/blogs/${slug}`,
+      apiUrl(`/api/blogs/${slug}`),
       { next: { revalidate: 60 } }
     );
 

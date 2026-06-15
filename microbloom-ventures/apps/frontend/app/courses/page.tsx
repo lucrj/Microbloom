@@ -1,4 +1,5 @@
 import CourseCard from "@/components/CourseCard";
+import { apiUrl } from "@/lib/api";
 
 type Course = {
   id: string;
@@ -14,7 +15,7 @@ type Course = {
 async function getCourses(): Promise<Course[]> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000"}/api/courses`,
+      apiUrl("/api/courses"),
       { next: { revalidate: 60 } }
     );
 

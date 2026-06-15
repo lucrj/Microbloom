@@ -1,5 +1,6 @@
 import ProductImageSlider from "@/components/ProductImageSlider";
 import { notFound } from "next/navigation";
+import { apiUrl, getApiBaseUrl } from "@/lib/api";
 
 type Product = {
   id: string;
@@ -13,17 +14,15 @@ type Product = {
   nutrition?: Record<string, string>;
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
-
 const getImageUrl = (path?: string) => {
   if (!path) return "/placeholder.jpg";
   if (path.startsWith("http")) return path;
-  return `${API_BASE}${path}`;
+  return `${getApiBaseUrl()}${path.startsWith("/") ? path : `/${path}`}`;
 };
 
 async function getProduct(slug: string): Promise<Product | null> {
   try {
-    const res = await fetch(`${API_BASE}/api/products/slug/${slug}`, {
+    const res = await fetch(apiUrl(`/api/products/slug/${slug}`), {
       next: { revalidate: 60 },
     });
 

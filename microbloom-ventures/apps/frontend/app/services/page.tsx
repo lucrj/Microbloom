@@ -1,4 +1,5 @@
 import ServiceCard from "@/components/ServiceCard";
+import { apiUrl } from "@/lib/api";
 
 type Service = {
   id: string;
@@ -14,7 +15,7 @@ type Service = {
 async function getServices(): Promise<Service[]> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000"}/api/services`,
+      apiUrl("/api/services"),
       { next: { revalidate: 60 } }
     );
 

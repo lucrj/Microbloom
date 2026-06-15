@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProductCard from "@/components/ProductCard";
+import { apiUrl } from "@/lib/api";
 
 type Product = {
   id: string;
@@ -23,7 +24,7 @@ export default function ProductsPreview() {
     const fetchProducts = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products`,
+          apiUrl("/api/products"),
           { cache: "no-store" }
         );
 

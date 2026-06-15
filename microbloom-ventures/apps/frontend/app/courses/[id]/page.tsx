@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { apiUrl } from "@/lib/api";
 
 type Course = {
   id: string;
@@ -15,7 +16,7 @@ type Course = {
 async function getCourse(id: string): Promise<Course | null> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000"}/api/courses/${id}`,
+      apiUrl(`/api/courses/${id}`),
       { next: { revalidate: 60 } }
     );
 

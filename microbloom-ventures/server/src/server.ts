@@ -47,6 +47,12 @@ import productRoutes from './routes/product.routes';
 import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
+const allowedOrigins = [
+  'http://localhost:3000',
+  ...(process.env.FRONTEND_URLS?.split(',') ?? []),
+]
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 /**
  * ======================================================
@@ -67,9 +73,7 @@ app.use(helmet());
  */
 app.use(
   cors({
-    origin: [
-      'http://localhost:3000', // Next.js dev
-    ],
+    origin: allowedOrigins,
     credentials: true,
   })
 );

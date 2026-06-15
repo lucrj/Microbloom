@@ -1,10 +1,11 @@
 import JobCard from "@/components/JobCard";
 import Link from "next/link";
+import { apiUrl } from "@/lib/api";
 
 async function getJobs() {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000"}/api/careers/jobs`,
+      apiUrl("/api/careers/jobs"),
       { next: { revalidate: 60 } }
     );
 

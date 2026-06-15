@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiUrl } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function LoginPage() {
       setLoading(true);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/login`,
+        apiUrl("/api/auth/login"),
         {
           method: "POST",
           headers: {
@@ -33,8 +34,12 @@ export default function LoginPage() {
         throw new Error(data.error || "Login failed");
       }
 
-      // store JWT
-      localStorage.setItem("token", data.token);
+      const token = data.data?.token;
+      if (!token) {
+        throw new Error("Login succeeded, but no token was returned");
+      }
+
+      localStorage.setItem("token", token);
 
       router.push("/");
     } catch (err: any) {

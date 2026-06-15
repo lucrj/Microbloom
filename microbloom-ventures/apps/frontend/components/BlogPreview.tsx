@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { apiUrl } from "@/lib/api";
 
 type Blog = {
   id: string;
@@ -23,7 +24,7 @@ export default function BlogPreview() {
     const fetchBlogs = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs`,
+          apiUrl("/api/blogs"),
           { cache: "no-store" }
         );
 

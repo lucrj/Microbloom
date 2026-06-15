@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { apiUrl } from "@/lib/api";
 
 type Service = {
   id: string;
@@ -16,7 +17,7 @@ type Service = {
 async function getService(slug: string): Promise<Service | null> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000"}/api/services/slug/${slug}`,
+      apiUrl(`/api/services/slug/${slug}`),
       { next: { revalidate: 60 } }
     );
 

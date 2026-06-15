@@ -1,10 +1,11 @@
 import InternshipCard from "@/components/InternshipCard";
 import Link from "next/link";
+import { apiUrl } from "@/lib/api";
 
 async function getInternships() {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000"}/api/internships`,
+      apiUrl("/api/internships"),
       { next: { revalidate: 60 } }
     );
 
