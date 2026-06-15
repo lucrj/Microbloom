@@ -21,6 +21,7 @@
     "express-async-handler": "^1.2.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
+    "slugify": "^1.6.9",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3"
   },
