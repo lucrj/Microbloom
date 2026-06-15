@@ -58,6 +58,54 @@ export const signup = asyncHandler(
   }
 );
 
+// CREATE ADMIN (ADMIN ONLY)
+export const createAdmin = asyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const email = req.body.email?.toLowerCase();
+    const { name, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({ ok: false, error: 'email & password required' });
+      return;
+    }
+
+    const exists = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (exists) {
+      res.status(409).json({
+        ok: false,
+        error: 'Email already used',
+      });
+      return;
+    }
+
+    const passwordHash = await hash(password);
+
+    const admin = await prisma.user.create({
+      data: {
+        email,
+        name,
+        passwordHash,
+        role: 'ADMIN',
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        createdAt: true,
+      },
+    });
+
+    res.status(201).json({
+      ok: true,
+      data: admin,
+    });
+  }
+);
+
 // LOGIN
 export const login = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {

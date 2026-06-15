@@ -4,6 +4,109 @@
  *   schemas:
  *
  *     # ======================
+ *     # AUTH & USERS
+ *     # ======================
+ *
+ *     AuthCredentials:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: user@example.com
+ *         password:
+ *           type: string
+ *           format: password
+ *           example: password123
+ *         name:
+ *           type: string
+ *           nullable: true
+ *           example: John Doe
+ *
+ *     AdminCreateInput:
+ *       allOf:
+ *         - $ref: '#/components/schemas/AuthCredentials'
+ *       example:
+ *         email: admin@example.com
+ *         password: password123
+ *         name: Admin User
+ *
+ *     User:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           example: cmabc123user1
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: user@example.com
+ *         name:
+ *           type: string
+ *           nullable: true
+ *           example: John Doe
+ *         role:
+ *           type: string
+ *           enum: [ADMIN, STAFF, USER]
+ *           example: USER
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2026-06-15T10:30:00.000Z
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2026-06-15T10:45:00.000Z
+ *
+ *     AuthResponse:
+ *       type: object
+ *       properties:
+ *         ok:
+ *           type: boolean
+ *           example: true
+ *         data:
+ *           type: object
+ *           properties:
+ *             user:
+ *               $ref: '#/components/schemas/User'
+ *             token:
+ *               type: string
+ *               example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *
+ *     ApiResponseUser:
+ *       type: object
+ *       properties:
+ *         ok:
+ *           type: boolean
+ *           example: true
+ *         data:
+ *           $ref: '#/components/schemas/User'
+ *
+ *     ApiResponseUsers:
+ *       type: object
+ *       properties:
+ *         ok:
+ *           type: boolean
+ *           example: true
+ *         data:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/User'
+ *
+ *     ErrorResponse:
+ *       type: object
+ *       properties:
+ *         ok:
+ *           type: boolean
+ *           example: false
+ *         error:
+ *           type: string
+ *           example: Invalid request
+ *
+ *     # ======================
  *     # COURSES
  *     # ======================
  *
