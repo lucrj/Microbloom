@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
-import prisma from '../lib/prisma';
-import { hash, compare } from '../lib/hash';
-import { signToken } from '../lib/jwt';
+import prisma from '../lib/prisma.js';
+import { hash, compare } from '../lib/hash.js';
+import { signToken } from '../lib/jwt.js';
 
 // SIGNUP
 export const signup = asyncHandler(

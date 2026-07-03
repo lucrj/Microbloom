@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler';
-import prisma from '../lib/prisma';
+import prisma from '../lib/prisma.js';
 import { Request, Response } from 'express';
 
 /* ======================================================

@@ -24,29 +24,32 @@ import cors from 'cors';
 import helmet from 'helmet';
 
 import swaggerUi from 'swagger-ui-express';
-import swaggerSpec from './docs/swagger';
+import swaggerSpec from './docs/swagger.js';
 
-import prisma from './lib/prisma';
+import prisma from './lib/prisma.js';
 
 /**
  * ------------------------------------------------------
  * Route Imports
  * ------------------------------------------------------
  */
-import authRoutes from './routes/auth.routes';
-import courseRoutes from './routes/course.routes';
-import serviceRoutes from './routes/service.routes';
-import internshipRoutes from './routes/internship.routes';
-import appointmentRoutes from './routes/appointment.routes';
-import blogPublicRoutes from './routes/blog.public.routes';
-import blogAdminRoutes from './routes/blog.admin.routes';
-import enrollmentRoutes from './routes/enrollment.routes';
-import careerRoutes from './routes/career.routes';
-import productRoutes from './routes/product.routes';
+import authRoutes from './routes/auth.routes.js';
+import courseRoutes from './routes/course.routes.js';
+import serviceRoutes from './routes/service.routes.js';
+import internshipRoutes from './routes/internship.routes.js';
+import appointmentRoutes from './routes/appointment.routes.js';
+import blogPublicRoutes from './routes/blog.public.routes.js';
+import blogAdminRoutes from './routes/blog.admin.routes.js';
+import enrollmentRoutes from './routes/enrollment.routes.js';
+import careerRoutes from './routes/career.routes.js';
+import productRoutes from './routes/product.routes.js';
+import admin, { adminRouter } from "./admin.js";
+console.log("Admin root:", admin.options.rootPath);
 
-import { errorHandler } from './middleware/errorHandler';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
+
 const allowedOrigins = [
   'http://localhost:3000',
   ...(process.env.FRONTEND_URLS?.split(',') ?? []),
@@ -64,8 +67,11 @@ const allowedOrigins = [
  * Security headers
  * Protects against common vulnerabilities
  */
-app.use(helmet());
-
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 /**
  * CORS Configuration
  * - Allow frontend (Next.js) only
@@ -90,6 +96,9 @@ app.use(express.json());
  * Must be registered BEFORE 404 handler
  */
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+app.use(admin.options.rootPath, adminRouter);
 
 /**
  * ======================================================

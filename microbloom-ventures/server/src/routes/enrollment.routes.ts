@@ -2,8 +2,8 @@ import { Router } from 'express';
 import {
   enroll,
   listEnrollments,
-} from '../controller/enrollment.controller';
-import { requireAuth } from '../middleware/auth';
+} from '../controller/enrollment.controller.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 

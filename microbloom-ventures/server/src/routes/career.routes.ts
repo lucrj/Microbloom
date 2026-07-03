@@ -9,7 +9,7 @@ import {
   applyJob,
   getHRContact,
   upsertHRContact,
-} from '../controller/career.controller';
+} from '../controller/career.controller.js';
 
 const router = Router();
 

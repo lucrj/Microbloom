@@ -5,8 +5,8 @@ import {
   apply,
    getInternshipById,
   ApplicationWithUser,
-} from '../controller/internship.controller';
-import { requireAuth, requireAdmin } from '../middleware/auth';
+} from '../controller/internship.controller.js';
+import { requireAuth, requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 

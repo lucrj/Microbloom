@@ -5,8 +5,8 @@ import {
   deleteBlog,
   getAllBlogsAdmin,
   getBlogByIdAdmin,
-} from "../controller/blog.controller";
-// import { requireAuth, requireAdmin } from "../middleware/auth";
+} from "../controller/blog.controller.js";
+// import { requireAuth, requireAdmin } from "../middleware/auth.js";
 
 const router = Router();
 

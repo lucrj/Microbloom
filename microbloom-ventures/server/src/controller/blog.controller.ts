@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import prisma from "../lib/prisma";
+import prisma from "../lib/prisma.js";
 import slugify from "slugify";
 
 /**

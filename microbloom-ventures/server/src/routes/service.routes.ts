@@ -6,7 +6,7 @@ import {
   createService,
   updateService,
   deleteService,
-} from "../controller/service.controller";
+} from "../controller/service.controller.js";
 
 const router = Router();
 

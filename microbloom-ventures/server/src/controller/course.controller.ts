@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import slugify from "slugify";
 
-import prisma from "../lib/prisma";
-import { toCourseDTO } from "../types/course.dto";
+import prisma from "../lib/prisma.js";
+import { toCourseDTO } from "../types/course.dto.js";
 
 /* ======================================================
    Types for Params
