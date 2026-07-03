@@ -30,25 +30,6 @@ router.get('/', listCourses);
 
 /**
  * @openapi
- * /api/courses/{id}:
- *   get:
- *     tags:
- *       - Courses
- *     summary: Get course by ID (internal use)
- *     description: >
- *       Internal endpoint. Prefer `/api/courses/slug/{slug}` for public usage.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- */
-router.get('/:id', getCourse);
-
-
-/**
- * @openapi
  * /api/courses/slug/{slug}:
  *   get:
  *     tags:
@@ -68,6 +49,25 @@ router.get('/:id', getCourse);
  *         description: Course not found
  */
 router.get('/slug/:slug', getCourseBySlug);
+
+
+/**
+ * @openapi
+ * /api/courses/{id}:
+ *   get:
+ *     tags:
+ *       - Courses
+ *     summary: Get course by ID (internal use)
+ *     description: >
+ *       Internal endpoint. Prefer `/api/courses/slug/{slug}` for public usage.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ */
+router.get('/:id', getCourse);
 
 
 /**
