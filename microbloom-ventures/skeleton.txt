@@ -8,14 +8,15 @@ microbloom-ventures/
 │   │   ├─ public/
 │   │   └─ package.json
 │   │
-│   └─ admin/                # optional
+│   └─ admin/
 │       ├─ app/
 │       ├─ components/
+│       ├─ lib/
 │       └─ package.json
 │
 ├─ server/
 │   ├─ src/
-│   │   ├─ controllers/
+│   │   ├─ controller/
 │   │   ├─ routes/
 │   │   ├─ middleware/
 │   │   ├─ lib/
@@ -29,5 +30,7 @@ microbloom-ventures/
 │
 ├─ .env
 ├─ .env.example
+├─ setup.sh
+├─ setup.ps1
 ├─ package.json               # root workspace scripts
 └─ README.md
