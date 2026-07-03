@@ -1,11 +1,12 @@
 # Microbloom Ventures
 
-Full-stack monorepo for the Microbloom Ventures website and API.
+Full-stack monorepo for the Microbloom Ventures platform, including the public website, API, and admin dashboard.
 
 This repository contains:
 
 - `apps/frontend/` - Next.js frontend built with React, TypeScript, and Tailwind CSS.
-- `server/` - Express API built with TypeScript, Prisma, PostgreSQL, JWT auth, and Swagger docs.
+- `apps/admin/` - Next.js admin dashboard for content management.
+- `server/` - Express API with TypeScript, Prisma, PostgreSQL, JWT auth, and AdminJS.
 - `prisma/` - Shared Prisma schema and seed logic.
 
 ## Tech Stack
@@ -13,7 +14,8 @@ This repository contains:
 - Monorepo: npm workspaces
 - Frontend: Next.js 16, React 19, TypeScript, Tailwind CSS
 - Backend: Node.js, Express 4, TypeScript, Prisma, PostgreSQL
-- Auth: bcrypt password hashing and JWT bearer tokens
+- Admin: AdminJS with React
+- Auth: bcrypt password hashing, JWT bearer tokens, and session-based auth for AdminJS
 - API docs: Swagger UI
 - Database: PostgreSQL with Prisma schema at `prisma/schema.prisma`
 
@@ -22,6 +24,7 @@ This repository contains:
 ```text
 microbloom-ventures/
   apps/
+    admin/
     frontend/
       app/
       components/
@@ -80,24 +83,37 @@ Do not include a trailing slash.
 
 ## Backend
 
-The backend exposes API routes for:
+The backend exposes the following API routes. For detailed request/response models, see the Swagger documentation.
 
-- auth: `/api/auth`
-- courses: `/api/courses`
-- services: `/api/services`
-- internships: `/api/internships`
-- appointments: `/api/appointments`
-- public blogs: `/api/blogs`
-- admin blogs: `/api/admin/blogs`
-- enrollments: `/api/enrollments`
-- careers: `/api/careers`
-- products: `/api/products`
+### Public Routes
+- `GET /api/health`: Health check for the server and database.
+- `GET /api/blogs`: Get all published blog posts.
+- `GET /api/blogs/slug/:slug`: Get a single published blog post by slug.
+- `GET /api/courses`: Get all courses.
+- `GET /api/courses/slug/:slug`: Get a course by slug.
+- `GET /api/internships`: Get all internships.
+- `GET /api/internships/:id`: Get an internship by ID.
+- `GET /api/products`: Get all active products.
+- `GET /api/products/slug/:slug`: Get a product by slug.
+- `GET /api/services`: Get all services.
+- `GET /api/services/slug/:slug`: Get a service by slug.
+- `GET /api/careers/jobs`: Get all active jobs.
+- `GET /api/careers/jobs/:id`: Get a job by ID.
+- `POST /api/careers/apply`: Submit a job application.
+- `GET /api/careers/hr-contact`: Get HR contact info.
+
+### User Authenticated Routes (`requireAuth`)
+- `POST /api/enrollments`: Enroll the current user in a course.
+- `GET /api/enrollments`: List enrollments for the current user.
+- `POST /api/appointments`: Request a dietician appointment.
+- `GET /api/appointments`: List appointments for the current user.
+- `POST /api/internships/apply`: Apply for an internship.
 
 Useful backend URLs:
-
 ```text
 Health check: http://localhost:4000/api/health
 Swagger docs: http://localhost:4000/api/docs
+AdminJS UI:   http://localhost:4000/admin
 ```
 
 ## Auth

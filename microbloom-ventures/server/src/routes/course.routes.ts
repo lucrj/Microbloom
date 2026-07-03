@@ -2,12 +2,13 @@ import { Router } from 'express';
 import {
   listCourses,
   getCourse,
-  createCourse,
   getCourseBySlug,
+  createCourse,
+  updateCourse,
   deleteCourse,
-} from '../controller/course.controller.js';
-import { requireAuth , requireAdmin } from '../middleware/auth.js';
+} from "../controller/course.controller.js";
 
+import { requireAuth, requireAdmin } from "../middleware/auth.js";
 
 const router = Router();
 
@@ -48,7 +49,7 @@ router.get('/', listCourses);
  *       404:
  *         description: Course not found
  */
-router.get('/slug/:slug', getCourseBySlug);
+router.get('/slug/:slug', getCourseBySlug); 
 
 
 /**

@@ -5,15 +5,20 @@ import slugify from "slugify";
 import prisma from "../lib/prisma.js";
 import { toCourseDTO } from "../types/course.dto.js";
 
-/* ======================================================
-   Types for Params
-====================================================== */
 type IdParam = { id: string };
 type SlugParam = { slug: string };
 
-/* ======================================================
-   GET /courses
-====================================================== */
+/**
+ * @openapi
+ * /api/courses:
+ *   get:
+ *     tags:
+ *       - Courses
+ *     summary: Get all courses
+ *     responses:
+ *       200:
+ *         description: A list of courses.
+ */
 export const listCourses = asyncHandler(
   async (_req: Request, res: Response): Promise<void> => {
     const courses = await prisma.course.findMany({
@@ -27,9 +32,22 @@ export const listCourses = asyncHandler(
   }
 );
 
-/* ======================================================
-   GET /courses/:id
-====================================================== */
+/**
+ * @openapi
+ * /api/courses/{id}:
+ *   get:
+ *     tags:
+ *       - Courses
+ *     summary: Get a course by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: The requested course.
+ */
 export const getCourse = asyncHandler(
   async (req: Request<IdParam>, res: Response): Promise<void> => {
     const { id } = req.params;
@@ -53,9 +71,22 @@ export const getCourse = asyncHandler(
   }
 );
 
-/* ======================================================
-   GET /courses/slug/:slug
-====================================================== */
+/**
+ * @openapi
+ * /api/courses/slug/{slug}:
+ *   get:
+ *     tags:
+ *       - Courses
+ *     summary: Get a course by slug
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: The requested course.
+ */
 export const getCourseBySlug = asyncHandler(
   async (req: Request<SlugParam>, res: Response): Promise<void> => {
     const { slug } = req.params;
@@ -79,9 +110,19 @@ export const getCourseBySlug = asyncHandler(
   }
 );
 
-/* ======================================================
-   POST /courses
-====================================================== */
+/**
+ * @openapi
+ * /api/courses:
+ *   post:
+ *     tags:
+ *       - Courses
+ *     summary: Create a new course (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Course created successfully.
+ */
 export const createCourse = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const {
@@ -142,9 +183,94 @@ export const createCourse = asyncHandler(
   }
 );
 
-/* ======================================================
-   DELETE /courses/:id
-====================================================== */
+/**
+ * @openapi
+ * /api/courses/{id}:
+ *   put:
+ *     tags:
+ *       - Courses
+ *     summary: Update a course (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Course updated successfully.
+ */
+export const updateCourse = asyncHandler(
+  async (req: Request<IdParam>, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const {
+      title,
+      description,
+      slug,
+      curriculum,
+      duration,
+      fees,
+      eligibility,
+    } = req.body;
+
+    const existing = await prisma.course.findUnique({ where: { id } });
+
+    if (!existing) {
+      res.status(404).json({ ok: false, error: "Course not found" });
+      return;
+    }
+
+    const newSlug = slug
+      ? slugify(slug, { lower: true, strict: true })
+      : title
+      ? slugify(title, { lower: true, strict: true })
+      : existing.slug;
+
+    if (newSlug !== existing.slug) {
+      const slugConflict = await prisma.course.findFirst({
+        where: { slug: newSlug, NOT: { id } },
+      });
+      if (slugConflict) {
+        res.status(400).json({ ok: false, error: "Slug is already in use" });
+        return;
+      }
+    }
+
+    const updated = await prisma.course.update({
+      where: { id },
+      data: {
+        title: title ?? existing.title,
+        description: description ?? existing.description,
+        slug: newSlug,
+        curriculum: curriculum ?? existing.curriculum,
+        duration: duration ?? existing.duration,
+        fees: fees ?? existing.fees,
+        eligibility: eligibility ?? existing.eligibility,
+      },
+    });
+
+    res.json({ ok: true, data: toCourseDTO(updated) });
+  }
+);
+
+/**
+ * @openapi
+ * /api/courses/{id}:
+ *   delete:
+ *     tags: [Courses]
+ *     summary: Delete a course (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Course deleted successfully.
+ */
 export const deleteCourse = asyncHandler(
   async (req: Request<IdParam>, res: Response): Promise<void> => {
     const { id } = req.params;

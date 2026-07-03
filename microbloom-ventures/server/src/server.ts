@@ -22,6 +22,7 @@ dotenv.config({
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import session from 'express-session';
 
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './docs/swagger.js';
@@ -88,6 +89,19 @@ app.use(
  * JSON body parser
  */
 app.use(express.json());
+
+/**
+ * ======================================================
+ * Session Middleware (for AdminJS)
+ * ======================================================
+ * Must be registered before the AdminJS router.
+ */
+app.use(session({
+  secret: process.env.COOKIE_SECRET || 'supersecret-fallback',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: process.env.NODE_ENV === 'production' },
+}));
 
 /**
  * ======================================================

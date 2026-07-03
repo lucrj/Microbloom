@@ -1,18 +1,35 @@
-import asyncHandler from "express-async-handler";
-import prisma from "../lib/prisma.js";
 import { Request, Response } from "express";
+import asyncHandler from "express-async-handler";
 import slugify from "slugify";
 
-/* ======================================================
-   Types
-====================================================== */
+import prisma from "../lib/prisma.js";
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Service:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         title:
+ *           type: string
+ */
+
 type IdParam = { id: string };
 type SlugParam = { slug: string };
 
-/* ======================================================
-   GET /services
-   List all services
-====================================================== */
+/**
+ * @openapi
+ * /api/services:
+ *   get:
+ *     tags: [Services]
+ *     summary: Get all services
+ *     responses:
+ *       200:
+ *         description: A list of services.
+ */
 export const listServices = asyncHandler(
   async (_req: Request, res: Response) => {
     const services = await prisma.service.findMany({
@@ -26,10 +43,21 @@ export const listServices = asyncHandler(
   }
 );
 
-/* ======================================================
-   GET /services/:id
-   Get single service by ID
-====================================================== */
+/**
+ * @openapi
+ * /api/services/{id}:
+ *   get:
+ *     tags: [Services]
+ *     summary: Get a single service by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: The requested service.
+ */
 export const getServiceById = asyncHandler(
   async (req: Request<IdParam>, res: Response) => {
     const { id } = req.params;
@@ -50,10 +78,21 @@ export const getServiceById = asyncHandler(
   }
 );
 
-/* ======================================================
-   GET /services/slug/:slug
-   Get single service by slug
-====================================================== */
+/**
+ * @openapi
+ * /api/services/slug/{slug}:
+ *   get:
+ *     tags: [Services]
+ *     summary: Get a single service by slug
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: The requested service.
+ */
 export const getServiceBySlug = asyncHandler(
   async (req: Request<SlugParam>, res: Response) => {
     const { slug } = req.params;
@@ -74,10 +113,18 @@ export const getServiceBySlug = asyncHandler(
   }
 );
 
-/* ======================================================
-   POST /services
-   Create a new service
-====================================================== */
+/**
+ * @openapi
+ * /api/services:
+ *   post:
+ *     tags: [Services]
+ *     summary: Create a new service (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Service created successfully.
+ */
 export const createService = asyncHandler(
   async (req: Request, res: Response) => {
     const {
@@ -125,10 +172,23 @@ export const createService = asyncHandler(
   }
 );
 
-/* ======================================================
-   PUT /services/:id
-   Update a service
-====================================================== */
+/**
+ * @openapi
+ * /api/services/{id}:
+ *   put:
+ *     tags: [Services]
+ *     summary: Update a service (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Service updated successfully.
+ */
 export const updateService = asyncHandler(
   async (req: Request<IdParam>, res: Response) => {
     const { id } = req.params;
@@ -187,10 +247,23 @@ export const updateService = asyncHandler(
   }
 );
 
-/* ======================================================
-   DELETE /services/:id
-   Delete a service
-====================================================== */
+/**
+ * @openapi
+ * /api/services/{id}:
+ *   delete:
+ *     tags: [Services]
+ *     summary: Delete a service (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Service deleted successfully.
+ */
 export const deleteService = asyncHandler(
   async (req: Request<IdParam>, res: Response) => {
     const { id } = req.params;

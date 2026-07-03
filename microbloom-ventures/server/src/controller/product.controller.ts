@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
+
 import prisma from "../lib/prisma.js";
 import slugify from "slugify";
 
@@ -14,9 +15,17 @@ type IdParams = {
   id: string;
 };
 
-//////////////////////////////
-// GET ALL PRODUCTS
-//////////////////////////////
+/**
+ * @openapi
+ * /api/products:
+ *   get:
+ *     tags:
+ *       - Products
+ *     summary: Get all active products
+ *     responses:
+ *       200:
+ *         description: A list of active products.
+ */
 export const listProducts = asyncHandler(async (_req: Request, res: Response) => {
   const products = await prisma.product.findMany({
     where: { isActive: true },
@@ -32,9 +41,23 @@ export const listProducts = asyncHandler(async (_req: Request, res: Response) =>
   });
 });
 
-//////////////////////////////
-// GET PRODUCT BY SLUG
-//////////////////////////////
+/**
+ * @openapi
+ * /api/products/slug/{slug}:
+ *   get:
+ *     tags:
+ *       - Products
+ *     summary: Get a single product by its slug
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The requested product.
+ */
 export const getProductBySlug = asyncHandler(
   async (req: Request<SlugParams>, res: Response) => {
     const { slug } = req.params;
@@ -55,9 +78,19 @@ export const getProductBySlug = asyncHandler(
   }
 );
 
-//////////////////////////////
-// CREATE PRODUCT (optional admin use)
-//////////////////////////////
+/**
+ * @openapi
+ * /api/products:
+ *   post:
+ *     tags:
+ *       - Products
+ *     summary: Create a new product (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Product created successfully.
+ */
 export const createProduct = asyncHandler(async (req: Request, res: Response) => {
   const {
     name,
@@ -108,9 +141,25 @@ export const createProduct = asyncHandler(async (req: Request, res: Response) =>
   });
 });
 
-//////////////////////////////
-// UPDATE PRODUCT (optional admin use)
-//////////////////////////////
+/**
+ * @openapi
+ * /api/products/{id}:
+ *   put:
+ *     tags:
+ *       - Products
+ *     summary: Update a product (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product updated successfully.
+ */
 export const updateProduct = asyncHandler(
   async (req: Request<IdParams>, res: Response) => {
     const { id } = req.params;
@@ -175,9 +224,25 @@ export const updateProduct = asyncHandler(
   }
 );
 
-//////////////////////////////
-// DELETE PRODUCT
-//////////////////////////////
+/**
+ * @openapi
+ * /api/products/{id}:
+ *   delete:
+ *     tags:
+ *       - Products
+ *     summary: Delete a product (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product deleted successfully.
+ */
 export const deleteProduct = asyncHandler(
   async (req: Request<IdParams>, res: Response) => {
     const { id } = req.params;
