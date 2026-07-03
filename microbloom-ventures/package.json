@@ -9,6 +9,7 @@
     "dev": "npm-run-all -p dev:frontend dev:server",
     "dev:frontend": "npm --workspace apps/frontend run dev",
     "dev:server": "npm --workspace server run dev",
+    "dev:admin": "npm --workspace apps/admin run dev",
     "build": "npm-run-all build:server build:frontend",
     "build:frontend": "npm --workspace apps/frontend run build",
     "build:server": "npm --workspace server run build",

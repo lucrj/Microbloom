@@ -62,6 +62,6 @@ router.get("/", getAllBlogs);
  *       404:
  *         description: Blog not found
  */
-router.get("/:slug", getBlogBySlug);
+router.get("/slug/:slug", getBlogBySlug);
 
 export default router;

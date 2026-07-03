@@ -35,45 +35,28 @@ async function main() {
       duration: 14,
       fees: 5000,
       eligibility: "Open for all",
-      curriculum: { modules: ["Intro", "Production", "Business"] },
+      curriculum: ["Introduction to Microgreens", "Cultivation & Harvesting", "Business & Marketing"],
     },
   });
 
   await prisma.product.createMany({
     data: [
       {
-        sku: "MICRO-RADISH-001",
-        title: "Radish Microgreens",
-        priceCents: 20000,
-        inventory: 100,
+        name: "Radish Microgreens",
+        slug: "radish-microgreens",
+        description: "Spicy and crisp radish microgreens, packed with nutrients.",
         category: "microgreens",
       },
       {
-        sku: "WHEATGRASS-FRESH-001",
-        title: "Wheatgrass Fresh",
-        priceCents: 15000,
-        inventory: 50,
+        name: "Wheatgrass Fresh",
+        slug: "wheatgrass-fresh",
+        description: "Freshly harvested wheatgrass, perfect for juicing.",
         category: "wheatgrass",
       },
     ],
       skipDuplicates: true,
     });
   
-    console.log("Seeding completed successfully!");
-  }
-  
-  main()
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-
-  /* ======================
-     INTERNSHIPS
-  ====================== */
    /* ======================
      INTERNSHIPS
   ====================== */
@@ -105,4 +88,16 @@ async function main() {
       },
     ],
     skipDuplicates: true,
+  });
+
+  console.log("Seeding completed successfully!");
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });

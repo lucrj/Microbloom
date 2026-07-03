@@ -18,7 +18,7 @@ type Blog = {
 async function getBlog(slug: string): Promise<Blog | null> {
   try {
     const res = await fetch(
-      apiUrl(`/api/blogs/${slug}`),
+      apiUrl(`/api/blogs/slug/${slug}`),
       { next: { revalidate: 60 } }
     );
 
